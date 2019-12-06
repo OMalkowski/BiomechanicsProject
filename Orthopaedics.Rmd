@@ -230,10 +230,9 @@ The next step is to use the partitioning method using the `rpart` function and p
 
 ## 3.5 rpart - train and test sets
 ```{r}
-train_rpart1 <- train(class ~., method = "rpart", data = train_set1)
+library(caret)
+train_rpart1 <- train(class ~ pelvic_incidence + pelvic_tilt + lumbar_lordosis_angle + sacral_slope + pelvic_radius + degree_spondylolisthesis, method = "rpart", data = train_set1)
 train_rpart1
-plot(train_rpart1,margin=0.1)
-text(train_rpart1,cex=0.75)
 confusionMatrix(predict(train_rpart1, test_set1), test_set1$class)$overall["Accuracy"]
 ind <- !(train_rpart1$finalModel$frame$var == "<leaf>") 
 tree_terms <-
@@ -271,7 +270,7 @@ Using the train and test sets, we can see that our accuracy is substantially hig
 
 ## 3.8 Multiclass support vector machine
 ```{r}
-install.packages("e1071")
+install.packages("e1071", repos="https://cran.r-project.org/package=e1071")
 library(e1071)
 svm1 <- svm(class~., data=train_set1, 
             method="C-classification", kernal="radial", 
